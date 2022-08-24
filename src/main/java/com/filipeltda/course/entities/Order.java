@@ -7,8 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -16,35 +15,30 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_user")
-public class User implements Serializable {
+@Table(name = "tb_order")
+public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String email;
-    private String phone;
-    private String password;
+    private Instant moment;
 
-    @OneToMany(mappedBy = "client")
-    private List<Order> orders = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private User client;
 
-    public User(Long id, String name, String email, String phone, String password) {
+    public Order(Long id, Instant moment) {
         this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
+        this.moment = moment;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return Objects.equals(getId(), user.getId());
+        if (!(o instanceof Order)) return false;
+        Order order = (Order) o;
+        return Objects.equals(getId(), order.getId());
     }
 
     @Override
