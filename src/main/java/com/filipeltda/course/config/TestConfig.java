@@ -1,8 +1,10 @@
 package com.filipeltda.course.config;
 
+import com.filipeltda.course.entities.Category;
 import com.filipeltda.course.entities.Order;
 import com.filipeltda.course.entities.User;
 import com.filipeltda.course.entities.enums.OrderStatus;
+import com.filipeltda.course.repositories.CategoryRepository;
 import com.filipeltda.course.repositories.OrderRepository;
 import com.filipeltda.course.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,19 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private OrderRepository oderRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
 
     @Override
     public void run(String... args) throws Exception {
+
+        Category cat1 = new Category(null, "Electronics");
+        Category cat2 = new Category(null, "Books");
+        Category cat3 = new Category(null, "Computers");
+
+        categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
+
         User u1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
         User u2 = new User(null, "Alex Green", "alex@gmail.com", "977777777", "123456");
 
