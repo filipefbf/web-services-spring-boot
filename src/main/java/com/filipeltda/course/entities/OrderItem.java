@@ -1,5 +1,7 @@
 package com.filipeltda.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.filipeltda.course.entities.pk.OrderItemPK;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,9 +21,14 @@ public class OrderItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
-    private OrderItemPK id;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private OrderItemPK id = new OrderItemPK();
     private Integer quantity;
     private Double price;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", insertable=false, updatable=false)
+    private Order order;
 
     public OrderItem(Order order, Product product, Integer quantity, Double price) {
         super();
@@ -31,6 +38,7 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
+    @JsonIgnore
     public Order getOrder() {
         return id.getOrder();
     }
